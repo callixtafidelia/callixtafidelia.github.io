@@ -98,6 +98,16 @@ export default function Hero() {
             </h1>
           </motion.div>
 
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="max-w-[700px] text-muted-foreground"
+          >
+            Making  data into meaningful insights through statistical analysis, visualization, and machine
+            learning techniques.
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
