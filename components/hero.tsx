@@ -2,78 +2,147 @@
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowDown } from "lucide-react"
-import { motion } from "framer-motion"
+import { ArrowRight, BarChart2, ChevronDown } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion"
 
 export default function Hero() {
   const [typedText, setTypedText] = useState("")
-  const fullText = "Statistics Student & Data Analyst"
+  const [currentPhrase, setCurrentPhrase] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  // Parallax effect on scroll
+  const { scrollY } = useScroll()
+  const y1 = useTransform(scrollY, [0, 500], [0, -150])
+  const y2 = useTransform(scrollY, [0, 500], [0, -100])
+  const opacity = useTransform(scrollY, [0, 300], [1, 0])
+
+  // Typing effect
+  const typingSpeed = 100
+  const baseText = "Hello, I'm John Doe"
+  const phrases = [
+    " | Statistics Student",
+    " | Data Analyst",
+    " | Machine Learning Enthusiast",
+    " | Visualization Expert",
+  ]
 
   useEffect(() => {
-    if (typedText.length < fullText.length) {
-      const timeout = setTimeout(() => {
-        setTypedText(fullText.slice(0, typedText.length + 1))
-      }, 100)
+    const currentFullText = baseText + phrases[currentPhrase]
 
-      return () => clearTimeout(timeout)
+    const handleTyping = () => {
+      // If we're deleting and reached just the base text
+      if (isDeleting && typedText === baseText) {
+        setIsDeleting(false)
+        setCurrentPhrase((prev) => (prev + 1) % phrases.length)
+        return
+      }
+
+      // If we're typing and reached the full text
+      if (!isDeleting && typedText === currentFullText) {
+        // Pause at the end of the phrase before starting to delete
+        setTimeout(() => setIsDeleting(true), 1500)
+        return
+      }
+
+      // Update the text one character at a time with consistent speed
+      setTimeout(() => {
+        setTypedText((prev) => {
+          if (isDeleting) {
+            return prev.substring(0, prev.length - 1)
+          } else {
+            return currentFullText.substring(0, prev.length + 1)
+          }
+        })
+      }, typingSpeed)
     }
-  }, [typedText, fullText])
+
+    handleTyping()
+  }, [typedText, currentPhrase, isDeleting, phrases, baseText])
+
+  const scrollToProjects = () => {
+    const projectsSection = document.getElementById("projects")
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+      {/* Background elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 dark:from-primary/10 dark:to-secondary/10" />
-        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl"></div>
       </div>
 
-      <div className="container relative z-10 px-4 md:px-6">
-        <div className="flex flex-col items-center text-center space-y-8">
+      <div className="container relative z-10 px-4 md:px-6 py-24 md:py-32">
+        <motion.div
+          style={{ y: y1, opacity }}
+          className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto"
+        >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="space-y-2"
+            transition={{ duration: 0.8 }}
+            className="space-y-4"
           >
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">John Doe</h1>
-            <p className="text-xl md:text-2xl text-muted-foreground h-8">
-              {typedText}
-              <span className="animate-blink">|</span>
-            </p>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-tight">
+              Transforming{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">data</span>{" "}
+              into{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-400">
+                meaningful
+              </span>{" "}
+              <span className="relative">
+                <span className="relative z-10">insights</span>
+              </span>
+            </h1>
           </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="max-w-[700px] text-muted-foreground"
-          >
-            Transforming complex data into meaningful insights through statistical analysis, visualization, and machine
-            learning techniques.
-          </motion.p>
 
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4"
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="space-y-6 mt-8"
           >
-            <Button asChild size="lg">
-              <a href="#projects">View Projects</a>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <a href="#contact">Contact Me</a>
-            </Button>
-          </motion.div>
-        </div>
-      </div>
+            <p className="text-xl text-gray-300">
+              {typedText}
+              <span className="inline-block w-1 h-5 bg-blue-400 ml-1 animate-blink"></span>
+            </p>
 
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <Button variant="ghost" size="icon" asChild>
-          <a href="#about">
-            <ArrowDown className="h-6 w-6" />
-            <span className="sr-only">Scroll down</span>
-          </a>
-        </Button>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button className="bg-blue-600 hover:bg-blue-700 rounded" size="lg" asChild>
+                <a href="#contact">
+                  Let's Connect <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+
+              <Button
+                className="border-gray-700 bg-gray-900/50 hover:bg-gray-800/50 rounded"
+                variant="outline"
+                size="lg"
+                asChild
+              >
+                <a href="#projects">
+                  Projects <BarChart2 className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          style={{ y: y2 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-2"
+        >
+          <span className="text-sm text-gray-400">Scroll to explore</span>
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+          >
+            <ChevronDown className="h-6 w-6 text-gray-400" />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
