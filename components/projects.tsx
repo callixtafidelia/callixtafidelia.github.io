@@ -3,21 +3,10 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
-import { GitBranch, FileText, ExternalLink, Code, BarChart } from "lucide-react"
-import { Chart } from "chart.js/auto"
-import { useEffect, useRef } from "react"
-import CodeDisplay from "./code-display"
-import { codeExamples } from "@/data/code-examples"
+import type { codeExamples } from "@/data/code-examples"
+import Link from "next/link"
 
 interface ProjectData {
   id: number
@@ -241,77 +230,12 @@ const projectsData: ProjectData[] = [
 ]
 
 export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null)
   const [filter, setFilter] = useState("all")
-  const [activeTab, setActiveTab] = useState<"visualization" | "code">("visualization")
-  const chartRef = useRef<HTMLCanvasElement>(null)
-  const chartInstance = useRef<Chart | null>(null)
 
   const filteredProjects =
     filter === "all"
       ? projectsData
       : projectsData.filter((project) => project.category.toLowerCase() === filter.toLowerCase())
-
-  useEffect(() => {
-    if (selectedProject && chartRef.current && activeTab === "visualization") {
-      try {
-        // Destroy previous chart if it exists
-        if (chartInstance.current) {
-          chartInstance.current.destroy()
-        }
-
-        const ctx = chartRef.current.getContext("2d")
-        if (ctx) {
-          chartInstance.current = new Chart(ctx, {
-            type: selectedProject.chartType,
-            data: selectedProject.chartData,
-            options: {
-              responsive: true,
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  grid: {
-                    color: "rgba(255, 255, 255, 0.1)",
-                  },
-                  ticks: {
-                    color: "rgba(255, 255, 255, 0.7)",
-                  },
-                },
-                x: {
-                  grid: {
-                    color: "rgba(255, 255, 255, 0.1)",
-                  },
-                  ticks: {
-                    color: "rgba(255, 255, 255, 0.7)",
-                  },
-                },
-              },
-              plugins: {
-                legend: {
-                  labels: {
-                    color: "rgba(255, 255, 255, 0.7)",
-                  },
-                },
-              },
-            },
-          })
-        }
-      } catch (error) {
-        console.error("Error initializing chart:", error)
-      }
-    }
-
-    return () => {
-      if (chartInstance.current) {
-        try {
-          chartInstance.current.destroy()
-        } catch (error) {
-          console.error("Error destroying chart:", error)
-        }
-        chartInstance.current = null
-      }
-    }
-  }, [selectedProject, activeTab])
 
   return (
     <section id="projects" className="relative py-20">
@@ -384,180 +308,14 @@ export default function Projects() {
                   </div>
                 </CardContent>
                 <CardFooter className="pt-2">
-                  <Dialog
-                    onOpenChange={(open) => {
-                      if (open) {
-                        setSelectedProject(project)
-                        setActiveTab("visualization")
-                      }
-                    }}
-                  >
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="w-full border-gray-700 hover:border-blue-500 hover:bg-blue-500/10"
-                      >
-                        View Details
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-4xl bg-gray-900 border-gray-800">
-                      <DialogHeader>
-                        <DialogTitle>{project.title}</DialogTitle>
-                        <DialogDescription className="text-gray-400">{project.category}</DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <Tabs
-                          defaultValue="visualization"
-                          className="w-full"
-                          onValueChange={(value) => setActiveTab(value as "visualization" | "code")}
-                        >
-                          <TabsList className="grid w-full grid-cols-2 bg-gray-800 rounded p-1">
-                            <TabsTrigger value="visualization" className="rounded flex items-center gap-2">
-                              <BarChart className="h-4 w-4" />
-                              Visualization
-                            </TabsTrigger>
-                            <TabsTrigger value="code" className="rounded flex items-center gap-2">
-                              <Code className="h-4 w-4" />
-                              Code
-                            </TabsTrigger>
-                          </TabsList>
-                          <TabsContent value="visualization" className="mt-4">
-                            <div className="aspect-video bg-gray-800 rounded-md overflow-hidden p-4">
-                              <canvas ref={chartRef} />
-                            </div>
-                          </TabsContent>
-                          <TabsContent value="code" className="mt-4">
-                            {selectedProject?.codeKey && (
-                              <CodeDisplay
-                                code={codeExamples[selectedProject.codeKey]}
-                                fileName={`${selectedProject.title.toLowerCase().replace(/\s+/g, "_")}.R`}
-                              />
-                            )}
-                          </TabsContent>
-                        </Tabs>
-
-                        <div className="space-y-4">
-                          <h4 className="font-semibold">Project Description</h4>
-                          <p className="text-gray-400">{project.description}</p>
-                          <h4 className="font-semibold">Methodology</h4>
-                          <p className="mb-2 text-gray-400">
-                            This project utilized {project.tools.join(", ")} to analyze the data and derive meaningful
-                            insights. The analysis followed these key steps:
-                          </p>
-                          <ol className="list-decimal pl-5 space-y-1 mb-2 text-gray-400">
-                            {project.id === 1 && (
-                              <>
-                                <li>
-                                  Data collection from multiple health agencies and preprocessing to handle missing
-                                  values
-                                </li>
-                                <li>Exploratory time series analysis to identify trends, seasonality, and anomalies</li>
-                                <li>ARIMA model fitting with parameter optimization using AIC/BIC criteria</li>
-                                <li>Prophet model implementation with changepoint detection</li>
-                                <li>Model validation using cross-validation and MAPE/RMSE metrics</li>
-                              </>
-                            )}
-                            {project.id === 2 && (
-                              <>
-                                <li>Feature engineering using RFM (Recency, Frequency, Monetary) analysis</li>
-                                <li>Data standardization and dimensionality reduction with PCA</li>
-                                <li>Optimal cluster determination using elbow method and silhouette scores</li>
-                                <li>K-means and hierarchical clustering implementation</li>
-                                <li>Cluster profiling and persona development for marketing strategies</li>
-                              </>
-                            )}
-                            {project.id === 3 && (
-                              <>
-                                <li>Data collection from multiple real estate sources and feature engineering</li>
-                                <li>Multicollinearity analysis using VIF (Variance Inflation Factor)</li>
-                                <li>Stepwise regression for variable selection</li>
-                                <li>Residual analysis and heteroscedasticity testing</li>
-                                <li>Cross-validation and performance comparison with existing models</li>
-                              </>
-                            )}
-                            {project.id === 4 && (
-                              <>
-                                <li>Patient data collection with appropriate censoring for incomplete follow-ups</li>
-                                <li>Kaplan-Meier survival curve estimation for different treatment groups</li>
-                                <li>Log-rank test for comparing survival distributions</li>
-                                <li>Cox proportional hazards modeling with covariate adjustment</li>
-                                <li>Hazard ratio calculation and interpretation for clinical significance</li>
-                              </>
-                            )}
-                            {project.id === 5 && (
-                              <>
-                                <li>Experimental design with power analysis to determine sample size</li>
-                                <li>Random assignment of users to test groups with cookie-based tracking</li>
-                                <li>Bayesian A/B testing framework implementation</li>
-                                <li>Sequential analysis with early stopping rules</li>
-                                <li>Confidence interval estimation and statistical significance testing</li>
-                              </>
-                            )}
-                            {project.id === 6 && (
-                              <>
-                                <li>Data collection of economic indicators from World Bank and IMF</li>
-                                <li>Data normalization and handling of missing values</li>
-                                <li>Correlation analysis and Kaiser-Meyer-Olkin (KMO) test</li>
-                                <li>Principal Component Analysis with varimax rotation</li>
-                                <li>Component interpretation and composite index creation</li>
-                              </>
-                            )}
-                          </ol>
-                          <h4 className="font-semibold">Tools Used</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {project.tools.map((tool, i) => (
-                              <span key={i} className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded">
-                                {tool}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            variant="outline"
-                            asChild
-                            className="border-gray-700 hover:border-blue-500 hover:bg-blue-500/10"
-                          >
-                            <a
-                              href={project.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2"
-                            >
-                              <GitBranch className="h-4 w-4" />
-                              Repository
-                            </a>
-                          </Button>
-                          <Button
-                            variant="outline"
-                            asChild
-                            className="border-gray-700 hover:border-blue-500 hover:bg-blue-500/10"
-                          >
-                            <a
-                              href={`${project.link}/report`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2"
-                            >
-                              <FileText className="h-4 w-4" />
-                              Report
-                            </a>
-                          </Button>
-                          <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                            <a
-                              href={project.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2"
-                            >
-                              <ExternalLink className="h-4 w-4" />
-                              Live Demo
-                            </a>
-                          </Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                  <Link href={`/projects/${project.id}`} className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full border-gray-700 hover:border-blue-500 hover:bg-blue-500/10"
+                    >
+                      View Details
+                    </Button>
+                  </Link>
                 </CardFooter>
               </Card>
             </motion.div>

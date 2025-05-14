@@ -70,8 +70,8 @@ export default function Hero() {
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full filter blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full filter blur-3xl"></div>
       </div>
 
       <div className="container relative z-10 px-4 md:px-6 py-24 md:py-32">
@@ -98,16 +98,6 @@ export default function Hero() {
             </h1>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="max-w-[700px] text-muted-foreground"
-          >
-            Making  data into meaningful insights through statistical analysis, visualization, and machine
-            learning techniques.
-          </motion.p>
-
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -120,16 +110,17 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center">
-              <Button className="bg-blue-600 hover:bg-blue-700 rounded" size="lg" asChild>
+              <Button
+                className="bg-gray-900/80 hover:bg-gray-800 border border-blue-500/30 hover:border-blue-500 text-blue-400 hover:text-blue-300 rounded w-40 h-12"
+                asChild
+              >
                 <a href="#contact">
                   Let's Connect <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
               </Button>
 
               <Button
-                className="border-gray-700 bg-gray-900/50 hover:bg-gray-800/50 rounded"
-                variant="outline"
-                size="lg"
+                className="bg-gray-900/80 hover:bg-gray-800 border border-blue-500/30 hover:border-blue-500 text-blue-400 hover:text-blue-300 rounded w-40 h-12"
                 asChild
               >
                 <a href="#projects">
@@ -140,11 +131,8 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          style={{ y: y2 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-2"
-        >
+        {/* Scroll indicator - centered */}
+        <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center space-y-2">
           <span className="text-sm text-gray-400">Scroll to explore</span>
           <motion.div
             animate={{ y: [0, 10, 0] }}
@@ -152,7 +140,7 @@ export default function Hero() {
           >
             <ChevronDown className="h-6 w-6 text-gray-400" />
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

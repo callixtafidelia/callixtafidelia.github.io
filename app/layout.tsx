@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${inter.className} dark`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <div className="relative min-h-screen overflow-hidden bg-black">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-black to-purple-950/20 z-0"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-950/10 via-black to-purple-950/10 z-0"></div>
             <SpaceBackground />
             <Navbar />
             {children}

@@ -62,8 +62,8 @@ export function SpaceBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       // Draw particles and connections
-      ctx.fillStyle = "rgba(59, 130, 246, 0.5)" // Blue color for particles
-      ctx.strokeStyle = "rgba(59, 130, 246, 0.15)" // Blue color for connections
+      ctx.fillStyle = "rgba(59, 130, 246, 0.3)" // Reduced opacity for particles
+      ctx.strokeStyle = "rgba(59, 130, 246, 0.08)" // Reduced opacity for connections
 
       const particles = particlesRef.current
       const connectionDistance = 150

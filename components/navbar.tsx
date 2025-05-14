@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,34 +8,14 @@ import { useMobile } from "@/hooks/use-mobile"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const isMobile = useMobile()
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
   return (
-    <header
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? "bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
-      }`}
-    >
+    <header className="fixed top-0 z-50 w-full bg-black/70 backdrop-blur-md">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-4">
           {/* Logo */}
@@ -53,7 +33,7 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           {!isMobile && (
             <nav className="flex items-center">
-              <div className="bg-gray-900/50 backdrop-blur-md rounded-lg px-4 py-2 border border-gray-800">
+              <div className="px-4 py-2">
                 <div className="flex space-x-6">
                   <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
                     Home
@@ -82,7 +62,7 @@ export default function Navbar() {
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
               {isMenuOpen && (
-                <div className="absolute top-16 right-0 w-48 bg-black/80 backdrop-blur-md border border-gray-800 rounded-lg p-4 flex flex-col space-y-4">
+                <div className="absolute top-16 right-0 w-48 bg-black/90 backdrop-blur-md rounded-lg p-4 flex flex-col space-y-4">
                   <Link href="/" onClick={toggleMenu} className="px-4 py-2 hover:text-primary rounded-md">
                     Home
                   </Link>

@@ -68,7 +68,7 @@ export default function About() {
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">About Me</h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-2 max-w-5xl mx-auto">
           {/* Photo slider - takes 4 columns on desktop (smaller) */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -99,19 +99,19 @@ export default function About() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 border-gray-700 hover:bg-black/70 z-10 h-8 w-8 rounded-full"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 border-gray-700 hover:bg-black/70 z-10 h-6 w-6 rounded-sm"
                   onClick={prevSlide}
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronLeft className="h-3 w-3" />
                 </Button>
 
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 border-gray-700 hover:bg-black/70 z-10 h-8 w-8 rounded-full"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 border-gray-700 hover:bg-black/70 z-10 h-6 w-6 rounded-sm"
                   onClick={nextSlide}
                 >
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-3 w-3" />
                 </Button>
               </div>
 
