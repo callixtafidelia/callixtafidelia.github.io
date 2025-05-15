@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { GitBranch, FileText, Code, BarChart, ArrowLeft, FileTextIcon as FileText2 } from "lucide-react"
+import { GitBranch, Code, BarChart, ArrowLeft } from "lucide-react"
 import { Chart } from "chart.js/auto"
 import CodeDisplay from "@/components/code-display"
 import { codeExamples } from "@/data/code-examples"
@@ -34,6 +34,13 @@ interface ProjectData {
   }
   variables?: string[]
   report?: string
+  reportImages?: {
+    id: string
+    url: string
+    caption: string
+    width?: number
+    height?: number
+  }[]
   codeKey?: keyof typeof codeExamples
 }
 
@@ -100,6 +107,29 @@ Future iterations of this project could incorporate:
 - Additional variables such as vaccination rates and mobility data
 - More sophisticated ensemble methods
 - Real-time updating capabilities for continuous forecasting`,
+    reportImages: [
+      {
+        id: "covid-trends",
+        url: "/placeholder.svg?height=300&width=500&text=COVID+Case+Trends",
+        caption: "Figure 1: COVID-19 case trends across different regions showing seasonal patterns",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "model-comparison",
+        url: "/placeholder.svg?height=300&width=500&text=ARIMA+vs+Prophet+Models",
+        caption: "Figure 2: Comparison of ARIMA and Prophet model predictions",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "forecast-accuracy",
+        url: "/placeholder.svg?height=300&width=500&text=Forecast+Accuracy",
+        caption: "Figure 3: Forecast accuracy metrics across different time horizons",
+        width: 500,
+        height: 300,
+      },
+    ],
     codeKey: "timeSeriesAnalysis",
   },
   {
@@ -188,6 +218,29 @@ Future iterations of this project could incorporate:
 - Real-time segmentation updates based on behavioral changes
 - Integration with recommendation systems
 - Predictive modeling for segment transitions`,
+    reportImages: [
+      {
+        id: "customer-clusters",
+        url: "/placeholder.svg?height=300&width=500&text=Customer+Clusters",
+        caption: "Figure 1: Visualization of customer segments in 2D feature space",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "rfm-analysis",
+        url: "/placeholder.svg?height=300&width=500&text=RFM+Analysis",
+        caption: "Figure 2: RFM analysis breakdown by customer segment",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "segment-performance",
+        url: "/placeholder.svg?height=300&width=500&text=Marketing+Performance",
+        caption: "Figure 3: Marketing performance metrics by customer segment",
+        width: 500,
+        height: 300,
+      },
+    ],
     codeKey: "customerSegmentation",
   },
   {
@@ -281,6 +334,29 @@ Future iterations of this project could incorporate:
 - Geospatial analysis using GIS data
 - Time-series components to capture market trends
 - Machine learning approaches like gradient boosting or random forests`,
+    reportImages: [
+      {
+        id: "variable-importance",
+        url: "/placeholder.svg?height=300&width=500&text=Variable+Importance",
+        caption: "Figure 1: Standardized coefficients showing variable importance in the model",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "residual-analysis",
+        url: "/placeholder.svg?height=300&width=500&text=Residual+Analysis",
+        caption: "Figure 2: Residual analysis showing model fit and heteroscedasticity",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "model-comparison",
+        url: "/placeholder.svg?height=300&width=500&text=Model+Comparison",
+        caption: "Figure 3: Performance comparison with county assessor model",
+        width: 500,
+        height: 300,
+      },
+    ],
     codeKey: "regressionAnalysis",
   },
   {
@@ -375,6 +451,29 @@ Future iterations of this project could incorporate:
 - Genetic and biomarker data for personalized treatment selection
 - Competing risks analysis for cause-specific mortality
 - Cost-effectiveness analysis of treatment options`,
+    reportImages: [
+      {
+        id: "survival-curves",
+        url: "/placeholder.svg?height=300&width=500&text=Survival+Curves",
+        caption: "Figure 1: Kaplan-Meier survival curves for the three treatment protocols",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "hazard-ratios",
+        url: "/placeholder.svg?height=300&width=500&text=Hazard+Ratios",
+        caption: "Figure 2: Forest plot of hazard ratios with confidence intervals",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "subgroup-analysis",
+        url: "/placeholder.svg?height=300&width=500&text=Subgroup+Analysis",
+        caption: "Figure 3: Treatment effectiveness across different patient subgroups",
+        width: 500,
+        height: 300,
+      },
+    ],
     codeKey: "survivalAnalysis",
   },
   {
@@ -485,6 +584,29 @@ Future iterations of this project could incorporate:
 - Personalized checkout experiences based on user segments
 - Cart abandonment recovery optimization
 - International checkout optimization for global markets`,
+    reportImages: [
+      {
+        id: "conversion-rates",
+        url: "/placeholder.svg?height=300&width=500&text=Conversion+Rates",
+        caption: "Figure 1: Conversion rates by design with confidence intervals",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "segment-analysis",
+        url: "/placeholder.svg?height=300&width=500&text=Segment+Analysis",
+        caption: "Figure 2: Conversion improvement by user segment",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "design-elements",
+        url: "/placeholder.svg?height=300&width=500&text=Design+Elements",
+        caption: "Figure 3: Key design elements that improved conversion rates",
+        width: 500,
+        height: 300,
+      },
+    ],
     codeKey: "abTesting",
   },
   {
@@ -595,6 +717,29 @@ Future iterations of this project could incorporate:
 - Technology adoption and innovation metrics
 - Dynamic time-series analysis of index changes
 - Machine learning approaches to improve predictive power`,
+    reportImages: [
+      {
+        id: "pca-components",
+        url: "/placeholder.svg?height=300&width=500&text=PCA+Components",
+        caption: "Figure 1: Principal components and variance explained",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "country-rankings",
+        url: "/placeholder.svg?height=300&width=500&text=Country+Rankings",
+        caption: "Figure 2: Top countries by composite economic health index",
+        width: 500,
+        height: 300,
+      },
+      {
+        id: "correlation-matrix",
+        url: "/placeholder.svg?height=300&width=500&text=Correlation+Matrix",
+        caption: "Figure 3: Correlation matrix of economic indicators",
+        width: 500,
+        height: 300,
+      },
+    ],
     codeKey: "pcaAnalysis",
   },
 ]
@@ -602,7 +747,7 @@ Future iterations of this project could incorporate:
 export default function ProjectDetail() {
   const params = useParams()
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<"visualization" | "code" | "report">("visualization")
+  const [activeTab, setActiveTab] = useState<"visualization" | "code">("visualization")
   const chartRef = useRef<HTMLCanvasElement>(null)
   const chartInstance = useRef<Chart | null>(null)
   const [project, setProject] = useState<ProjectData | undefined>(undefined)
@@ -627,6 +772,7 @@ export default function ProjectDetail() {
     }
   }, [projectId])
 
+  // Chart data filtering function remains the same
   const getFilteredChartData = useCallback(() => {
     if (!project) return null
 
@@ -665,6 +811,7 @@ export default function ProjectDetail() {
     }
   }, [project, selectedVariables, xAxis, yAxis])
 
+  // Chart initialization function remains the same
   const initializeChart = useCallback(() => {
     if (chartRef.current && activeTab === "visualization" && project) {
       try {
@@ -745,6 +892,202 @@ export default function ProjectDetail() {
     })
   }
 
+  // Completely revised report rendering function
+  const renderReportContent = () => {
+    if (!project?.report) return <p>No report available for this project.</p>
+
+    // Parse the markdown-like content
+    const parsedContent = parseReportContent(project.report)
+
+    // Add images at strategic positions
+    if (project.reportImages && project.reportImages.length > 0) {
+      // Add first image after executive summary
+      const execSummaryIndex = parsedContent.findIndex(
+        (item) => item.type === "heading" && item.level === 2 && item.content.includes("Executive Summary"),
+      )
+
+      if (execSummaryIndex >= 0 && project.reportImages[0]) {
+        parsedContent.splice(execSummaryIndex + 2, 0, {
+          type: "image",
+          content: project.reportImages[0],
+        })
+      }
+
+      // Add second image after methodology
+      const methodologyIndex = parsedContent.findIndex(
+        (item) => item.type === "heading" && item.level === 2 && item.content.includes("Methodology"),
+      )
+
+      if (methodologyIndex >= 0 && project.reportImages[1]) {
+        parsedContent.splice(methodologyIndex + 2, 0, {
+          type: "image",
+          content: project.reportImages[1],
+        })
+      }
+
+      // Add third image near the end
+      if (project.reportImages[2] && parsedContent.length > 5) {
+        parsedContent.splice(parsedContent.length - 3, 0, {
+          type: "image",
+          content: project.reportImages[2],
+        })
+      }
+    }
+
+    // Render the parsed content
+    return parsedContent.map((item, index) => {
+      switch (item.type) {
+        case "heading":
+          if (item.level === 1) {
+            return (
+              <h1 key={`heading-${index}`} className="text-3xl font-bold mt-0 mb-6 text-center text-white">
+                {item.content}
+              </h1>
+            )
+          } else if (item.level === 2) {
+            return (
+              <h2
+                key={`heading-${index}`}
+                className="text-2xl font-bold mt-10 mb-4 text-white border-b border-gray-700 pb-2"
+              >
+                {item.content}
+              </h2>
+            )
+          } else if (item.level === 3) {
+            return (
+              <h3 key={`heading-${index}`} className="text-xl font-bold mt-8 mb-3 text-white">
+                {item.content}
+              </h3>
+            )
+          }
+          break
+
+        case "paragraph":
+          return (
+            <p key={`paragraph-${index}`} className="mb-5 text-gray-300 leading-relaxed">
+              {item.content}
+            </p>
+          )
+
+        case "bulletList":
+          return (
+            <ul key={`bullet-list-${index}`} className="list-disc pl-6 mb-6 mt-3 space-y-2">
+              {item.items.map((listItem, i) => (
+                <li key={`bullet-item-${i}`} className="text-gray-300">
+                  {listItem}
+                </li>
+              ))}
+            </ul>
+          )
+
+        case "numberedList":
+          return (
+            <ol key={`numbered-list-${index}`} className="list-decimal pl-6 mb-6 mt-3 space-y-2">
+              {item.items.map((listItem, i) => (
+                <li key={`numbered-item-${i}`} className="text-gray-300">
+                  {listItem}
+                </li>
+              ))}
+            </ol>
+          )
+
+        case "image":
+          return (
+            <div key={`image-${index}`} className="my-8">
+              <div className="bg-gray-700 rounded-md overflow-hidden">
+                <img
+                  src={item.content.url || "/placeholder.svg"}
+                  alt={item.content.caption}
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+              <p className="text-sm text-gray-400 mt-2 text-center">{item.content.caption}</p>
+            </div>
+          )
+
+        default:
+          return null
+      }
+    })
+  }
+
+  // Helper function to parse the report content into structured data
+  const parseReportContent = (content: string) => {
+    const lines = content.split("\n")
+    const result = []
+
+    let currentSection = null
+    let currentList = null
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim()
+
+      // Skip empty lines
+      if (!line) continue
+
+      // Handle headings
+      if (line.startsWith("# ")) {
+        result.push({ type: "heading", level: 1, content: line.substring(2) })
+        currentSection = null
+        currentList = null
+      } else if (line.startsWith("## ")) {
+        result.push({ type: "heading", level: 2, content: line.substring(3) })
+        currentSection = null
+        currentList = null
+      } else if (line.startsWith("### ")) {
+        result.push({ type: "heading", level: 3, content: line.substring(4) })
+        currentSection = null
+        currentList = null
+      }
+      // Handle bullet lists
+      else if (line.startsWith("- ")) {
+        if (currentList && currentList.type === "bulletList") {
+          currentList.items.push(line.substring(2))
+        } else {
+          currentList = { type: "bulletList", items: [line.substring(2)] }
+          result.push(currentList)
+        }
+        currentSection = null
+      }
+      // Handle numbered lists
+      else if (/^\d+\.\s/.test(line)) {
+        const content = line.replace(/^\d+\.\s/, "")
+
+        if (currentList && currentList.type === "numberedList") {
+          currentList.items.push(content)
+        } else {
+          currentList = { type: "numberedList", items: [content] }
+          result.push(currentList)
+        }
+        currentSection = null
+      }
+      // Handle paragraphs
+      else {
+        // If we're in a section with a heading like "Methodology" or "Key Findings",
+        // check if this line starts with a number followed by a period, which indicates a list item
+        const listItemMatch = line.match(/^(\d+)\.\s(.+)/)
+
+        if (listItemMatch) {
+          // This is a list item in a section
+          if (currentList && currentList.type === "numberedList") {
+            currentList.items.push(listItemMatch[2])
+          } else {
+            currentList = { type: "numberedList", items: [listItemMatch[2]] }
+            result.push(currentList)
+          }
+          currentSection = null
+        } else {
+          // Regular paragraph
+          result.push({ type: "paragraph", content: line })
+          currentSection = "paragraph"
+          currentList = null
+        }
+      }
+    }
+
+    return result
+  }
+
   if (!project) {
     return (
       <div className="container py-20 text-center">
@@ -774,16 +1117,17 @@ export default function ProjectDetail() {
           <h1 className="text-3xl font-bold mb-2">{project.title}</h1>
           <p className="text-gray-400 mb-6">{project.category}</p>
 
-          <div className="aspect-video bg-gray-800 rounded-md mb-8 overflow-hidden">
-            <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover" />
+          {/* Report content with improved rendering */}
+          <div className="bg-gray-800/80 rounded-md p-8 prose prose-invert max-w-none mb-8 shadow-md">
+            {renderReportContent()}
           </div>
 
           <Tabs
             defaultValue="visualization"
             className="w-full mb-8"
-            onValueChange={(value) => setActiveTab(value as "visualization" | "code" | "report")}
+            onValueChange={(value) => setActiveTab(value as "visualization" | "code")}
           >
-            <TabsList className="grid w-full grid-cols-3 bg-gray-800 rounded p-1">
+            <TabsList className="grid w-full grid-cols-2 bg-gray-800 rounded p-1">
               <TabsTrigger value="visualization" className="rounded flex items-center gap-2">
                 <BarChart className="h-4 w-4" />
                 Visualization
@@ -791,10 +1135,6 @@ export default function ProjectDetail() {
               <TabsTrigger value="code" className="rounded flex items-center gap-2">
                 <Code className="h-4 w-4" />
                 Code
-              </TabsTrigger>
-              <TabsTrigger value="report" className="rounded flex items-center gap-2">
-                <FileText2 className="h-4 w-4" />
-                Report
               </TabsTrigger>
             </TabsList>
 
@@ -873,67 +1213,6 @@ export default function ProjectDetail() {
                 />
               )}
             </TabsContent>
-
-            <TabsContent value="report" className="mt-4">
-              <div className="bg-gray-800 rounded-md p-6 prose prose-invert max-w-none">
-                {project.report ? (
-                  <div className="markdown-content">
-                    {project.report.split("\n\n").map((paragraph, index) => {
-                      if (paragraph.startsWith("# ")) {
-                        return (
-                          <h1 key={index} className="text-2xl font-bold mt-0 mb-4">
-                            {paragraph.substring(2)}
-                          </h1>
-                        )
-                      } else if (paragraph.startsWith("## ")) {
-                        return (
-                          <h2 key={index} className="text-xl font-bold mt-6 mb-3">
-                            {paragraph.substring(3)}
-                          </h2>
-                        )
-                      } else if (paragraph.startsWith("### ")) {
-                        return (
-                          <h3 key={index} className="text-lg font-bold mt-5 mb-2">
-                            {paragraph.substring(4)}
-                          </h3>
-                        )
-                      } else if (paragraph.startsWith("- ")) {
-                        return (
-                          <ul key={index} className="list-disc pl-5 mb-4">
-                            {paragraph.split("\n").map((item, i) => (
-                              <li key={i} className="mb-1">
-                                {item.substring(2)}
-                              </li>
-                            ))}
-                          </ul>
-                        )
-                      } else if (paragraph.startsWith("1. ")) {
-                        return (
-                          <ol key={index} className="list-decimal pl-5 mb-4">
-                            {paragraph.split("\n").map((item, i) => {
-                              const match = item.match(/^\d+\.\s(.*)/)
-                              return match ? (
-                                <li key={i} className="mb-1">
-                                  {match[1]}
-                                </li>
-                              ) : null
-                            })}
-                          </ol>
-                        )
-                      } else {
-                        return (
-                          <p key={index} className="mb-4">
-                            {paragraph}
-                          </p>
-                        )
-                      }
-                    })}
-                  </div>
-                ) : (
-                  <p>No report available for this project.</p>
-                )}
-              </div>
-            </TabsContent>
           </Tabs>
 
           <div className="flex justify-end gap-2 pt-4">
@@ -941,17 +1220,6 @@ export default function ProjectDetail() {
               <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                 <GitBranch className="h-4 w-4" />
                 Repository
-              </a>
-            </Button>
-            <Button variant="outline" asChild className="border-gray-700 hover:border-blue-500 hover:bg-blue-500/10">
-              <a
-                href={`${project.link}/report`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2"
-              >
-                <FileText className="h-4 w-4" />
-                Download Full Report
               </a>
             </Button>
           </div>
